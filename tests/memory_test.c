@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 void test_create_memory() {
-    Memory* mem = create_memory();
+    Memory *mem = create_memory();
     assert(mem != NULL);
     assert(mem->data == 0);
     assert(mem->next == NULL);
@@ -37,10 +37,22 @@ void test_get_prev() {
     printf("[pass] test_get_prev\n");
 }
 
+void test_modify_data() {
+    Memory *mem = create_memory();
+    assert(mem->data == 0);
+    increment_data(mem);
+    assert(mem->data == 1);
+    increment_data(mem);
+    increment_data(mem);
+    assert(mem->data == 3);
+    printf("[pass] test_modify_data\n");
+}
+
 int main() {
     test_create_memory();
     test_get_next();
     test_get_prev();
-    printf("all tests passed!\n");
+    test_modify_data();
+    printf("all tests passed!\n\n");
     return 0;
 }
