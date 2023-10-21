@@ -13,5 +13,6 @@ typedef struct Engine {
 Engine* create_engine(char* input);
 char get_current_instr(Engine* e);
 int has_instr(Engine* e);
+void eval(Engine* e);
 
 #endif
