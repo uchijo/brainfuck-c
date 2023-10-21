@@ -8,7 +8,7 @@
 
 void test_current_instr() {
     char* input = "hogehoge~";
-    Engine* e = create_engine(input);
+    Engine* e = create_engine(input, 100000);
     char instr = get_current_instr(e);
     assert(instr == input[0]);
     printf("[pass] test_current_instr\n");
@@ -16,22 +16,22 @@ void test_current_instr() {
 
 void test_has_instr() {
     char* input = "hogehoge~";
-    Engine* e1 = create_engine(input);
+    Engine* e1 = create_engine(input, 100000);
     assert(has_instr(e1));
 
     char* input2 = "";
-    Engine* e2 = create_engine(input2);
+    Engine* e2 = create_engine(input2, 100000);
     assert(!has_instr(e2));
 
     char* input3 = "a";
-    Engine* e3 = create_engine(input3);
+    Engine* e3 = create_engine(input3, 100000);
     assert(has_instr(e3));
     printf("[pass] test_has_instr\n");
 }
 
 void test_eval1() {
     char* input = "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.";
-    Engine* e = create_engine(input);
+    Engine* e = create_engine(input, 100000);
     eval(e);
 
     printf("[pass] test_eval1\n");
@@ -39,7 +39,7 @@ void test_eval1() {
 
 void test_eval2() {
     char* input = "+++++++++[>++++++++>+++++++++++>+++>+<<<<-]>.>++.+++++++..+++.>+++++.<<+++++++++++++++.>.+++.------.--------.>+.>+.";
-    Engine* e = create_engine(input);
+    Engine* e = create_engine(input, 100000);
     eval(e);
 
     printf("[pass] test_eval2\n");
@@ -47,7 +47,7 @@ void test_eval2() {
 
 void test_eval3() {
     char* input = "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++[>]<.";
-    Engine* e = create_engine(input);
+    Engine* e = create_engine(input, 100000);
     eval(e);
 
     printf("[pass] test_eval3\n");

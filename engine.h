@@ -9,10 +9,12 @@ typedef struct Engine {
     char* input;
     int input_length;
     int current_instr;
+    int steps;
+    int steps_limit;
     Stack* stack;
 } Engine;
 
-Engine* create_engine(char* input);
+Engine* create_engine(char* input, int limit);
 char get_current_instr(Engine* e);
 int has_instr(Engine* e);
 void eval(Engine* e);

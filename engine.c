@@ -8,7 +8,7 @@
 #include "memory_collection.h"
 #include "stack.h"
 
-Engine* create_engine(char* input) {
+Engine* create_engine(char* input, int limit) {
     Engine* e = malloc(sizeof(Engine));
     if (!e) {
         return NULL;
@@ -27,6 +27,8 @@ Engine* create_engine(char* input) {
 
     e->current_instr = 0;
     e->input_length = strlen(input);
+    e->steps = 0;
+    e->steps_limit = limit;
     e->stack = create_stack();
     if (!e->stack) {
         return NULL;
@@ -43,6 +45,11 @@ void eval(Engine* e) {
     int in;
     int braces;
     for (;;) {
+        e->steps++;
+        if (e->steps > e->steps_limit) {
+            printf("steps limit exceeded.");
+            break;
+        }
         if (!has_instr(e)) {
             break;
         }
