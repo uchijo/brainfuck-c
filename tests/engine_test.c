@@ -37,10 +37,28 @@ void test_eval1() {
     printf("[pass] test_eval1\n");
 }
 
+void test_eval2() {
+    char* input = "+++++++++[>++++++++>+++++++++++>+++>+<<<<-]>.>++.+++++++..+++.>+++++.<<+++++++++++++++.>.+++.------.--------.>+.>+.";
+    Engine* e = create_engine(input);
+    eval(e);
+
+    printf("[pass] test_eval2\n");
+}
+
+void test_eval3() {
+    char* input = "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++[>]<.";
+    Engine* e = create_engine(input);
+    eval(e);
+
+    printf("[pass] test_eval3\n");
+}
+
 int main() {
     test_current_instr();
     test_has_instr();
     test_eval1();
+    test_eval2();
+    test_eval3();
     printf("all tests passed!\n\n");
     return 0;
 }

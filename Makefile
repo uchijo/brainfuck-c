@@ -22,8 +22,8 @@ test_memory: memory.o memory_test.o
 test_memory_collection: memory.o memory_collection.o memory_collection_test.o
 	$(CC) $(CFLAGS) -o test_memory_collection memory_collection_test.o memory.o memory_collection.o
 
-test_engine: memory.o memory_collection.o engine.o engine_test.o
-	$(CC) $(CFLAGS) -o test_engine engine_test.o engine.o memory.o memory_collection.o
+test_engine: memory.o memory_collection.o engine.o engine_test.o stack.o
+	$(CC) $(CFLAGS) -o test_engine engine_test.o engine.o memory.o memory_collection.o stack.o
 
 test_stack: stack.o stack_test.o
 	$(CC) $(CFLAGS) -o test_stack stack.o stack_test.o

@@ -6,6 +6,7 @@
 
 #include "memory.h"
 #include "memory_collection.h"
+#include "stack.h"
 
 Engine* create_engine(char* input) {
     Engine* e = malloc(sizeof(Engine));
@@ -26,6 +27,10 @@ Engine* create_engine(char* input) {
 
     e->current_instr = 0;
     e->input_length = strlen(input);
+    e->stack = create_stack();
+    if (!e->stack) {
+        return NULL;
+    }
 
     return e;
 }
@@ -36,6 +41,7 @@ int has_instr(Engine* e) { return e->current_instr < e->input_length; }
 
 void eval(Engine* e) {
     int in;
+    int braces;
     for (;;) {
         if (!has_instr(e)) {
             break;
@@ -60,6 +66,34 @@ void eval(Engine* e) {
                 break;
             case '<':
                 prev_mem(e->memc);
+                break;
+            case '[':
+                push(e->stack, e->current_instr);
+                if (get_current_mem(e->memc) != 0) {
+                    break;
+                }
+                braces = 0;
+                for (int i = e->current_instr + 1; i < e->input_length; i++) {
+                    if (e->input[i] == '[') {
+                        braces++;
+                        continue;
+                    }
+                    if (e->input[i] == ']' && braces == 0) {
+                        e->current_instr = i;
+                        break;
+                    }
+                    if (e->input[i] == ']') {
+                        braces--;
+                        continue;
+                    }
+                }
+                break;
+            case ']':
+                if (get_current_mem(e->memc) == 0) {
+                    pop(e->stack);
+                    break;
+                }
+                e->current_instr = peek(e->stack);
                 break;
 
             default:

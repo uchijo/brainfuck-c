@@ -2,12 +2,14 @@
 #define ENGINE_H
 
 #include "memory_collection.h"
+#include "stack.h"
 
 typedef struct Engine {
     MemoryCollection* memc;
     char* input;
     int input_length;
     int current_instr;
+    Stack* stack;
 } Engine;
 
 Engine* create_engine(char* input);
