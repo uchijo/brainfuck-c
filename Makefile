@@ -7,8 +7,8 @@ TARGET = brainfuck
 
 all: $(TARGET)
 
-$(TARGET): main.o memory.o
-	$(CC) $(CFLAGS) -o $(TARGET) main.o
+$(TARGET): main.o memory.o memory_collection.o stack.o engine.o
+	$(CC) $(CFLAGS) -o $(TARGET) main.o memory.o memory_collection.o stack.o engine.o
 
 test: test_memory test_memory_collection test_engine test_stack
 	./test_memory
