@@ -6,7 +6,6 @@
 
 #include "memory.h"
 #include "memory_collection.h"
-#include "stack.h"
 
 Engine* create_engine(char* input, int limit) {
     Engine* e = malloc(sizeof(Engine));
@@ -29,10 +28,6 @@ Engine* create_engine(char* input, int limit) {
     e->input_length = strlen(input);
     e->steps = 0;
     e->steps_limit = limit;
-    e->stack = create_stack();
-    if (!e->stack) {
-        return NULL;
-    }
 
     return e;
 }
@@ -45,12 +40,12 @@ void eval(Engine* e) {
     int in;
     int braces;
     for (;;) {
-        e->steps++;
-        if (e->steps > e->steps_limit) {
-            printf("steps limit exceeded.");
-            break;
-        }
-        if (!has_instr(e)) {
+        // e->steps++;
+        // if (e->steps > e->steps_limit) {
+        //     printf("steps limit exceeded.");
+        //     break;
+        // }
+        if (e->current_instr >= e->input_length) {
             break;
         }
         char instr = get_current_instr(e);
@@ -75,21 +70,21 @@ void eval(Engine* e) {
                 prev_mem(e->memc);
                 break;
             case '[':
-                push(e->stack, e->current_instr);
                 if (get_current_mem(e->memc) != 0) {
                     break;
                 }
                 braces = 0;
                 for (int i = e->current_instr + 1; i < e->input_length; i++) {
-                    if (e->input[i] == '[') {
+                    char focused = e->input[i];
+                    if (focused == '[') {
                         braces++;
                         continue;
                     }
-                    if (e->input[i] == ']' && braces == 0) {
+                    if (focused == ']' && braces == 0) {
                         e->current_instr = i;
                         break;
                     }
-                    if (e->input[i] == ']') {
+                    if (focused == ']') {
                         braces--;
                         continue;
                     }
@@ -97,10 +92,24 @@ void eval(Engine* e) {
                 break;
             case ']':
                 if (get_current_mem(e->memc) == 0) {
-                    pop(e->stack);
                     break;
                 }
-                e->current_instr = peek(e->stack);
+                braces = 0;
+                for (int i = e->current_instr - 1; i >= 0; i--) {
+                    char focused = e->input[i];
+                    if (focused == ']') {
+                        braces++;
+                        continue;
+                    }
+                    if (focused == '[' && braces == 0) {
+                        e->current_instr = i;
+                        break;
+                    }
+                    if (focused == '[') {
+                        braces--;
+                        continue;
+                    }
+                }
                 break;
 
             default:

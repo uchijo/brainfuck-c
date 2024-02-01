@@ -2,7 +2,6 @@
 #define ENGINE_H
 
 #include "memory_collection.h"
-#include "stack.h"
 
 typedef struct Engine {
     MemoryCollection* memc;
@@ -11,7 +10,6 @@ typedef struct Engine {
     int current_instr;
     int steps;
     int steps_limit;
-    Stack* stack;
 } Engine;
 
 Engine* create_engine(char* input, int limit);
