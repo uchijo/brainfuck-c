@@ -1,14 +1,27 @@
 CC=gcc
 CFLAGS = -Wall -O2
+CFLAGS_PROF = -Wall -pg
 
 TARGET = brainfuck
+PROF_TARGET = brainfuck_prof
 
-.PHONY: all clean test
+.PHONY: all clean test prof
 
 all: $(TARGET)
 
+prof: analysis.txt
+
 $(TARGET): main.o memory.o memory_collection.o stack.o engine.o
 	$(CC) $(CFLAGS) -o $(TARGET) main.o memory.o memory_collection.o stack.o engine.o
+
+$(PROF_TARGET): main.o memory.o memory_collection.o stack.o engine.o
+	$(CC) $(CFLAGS_PROF) -o $(PROF_TARGET) main.o memory.o memory_collection.o stack.o engine.o
+
+analysis.txt: gmon.out $(PROF_TARGET)
+	gprof $(PROF_TARGET) gmon.out > analysis.txt
+
+gmon.out: $(PROF_TARGET)
+	./$(PROF_TARGET) mandelbrot.bf
 
 test: test_memory test_memory_collection test_engine test_stack
 	./test_memory
@@ -53,4 +66,4 @@ stack_test.o: tests/stack_test.c
 	$(CC) $(CFLAGS) -c tests/stack_test.c
 
 clean:
-	rm -f *.o $(TARGET) test_*
+	rm -f *.o $(TARGET) $(PROF_TARGET) analysis.txt gmon.out test_*

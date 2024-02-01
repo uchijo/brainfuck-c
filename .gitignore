@@ -1,4 +1,7 @@
 a.out
 *.o
 brainfuck
+brainfuck_prof
+analysis.txt
+gmon.out
 test_*
